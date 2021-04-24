@@ -33,7 +33,7 @@ const NotFoundScreen = props => {
             width: '100vw',
             fontFamily: theme.fonts.family
         }}>
-            <ImageWrapper src={glass} alt={'Not found'} />
+            <ImageWrapper style={{ height: '60%' }} src={glass} alt={'Not found'} />
             <Button onClick={returnHome}>Powrót</Button>
         </div>
     )

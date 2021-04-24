@@ -15,23 +15,26 @@ const EquipmentScreen = props => {
 
     const inputLabelStyle = {
         marginRight: '4%',
-        width: '6vw',
+        width: '7.5vw',
         textAlign: 'center',
         cursor: 'help'
     }
 
     const ansLabelStyle = {
-        width: '5vw',
+        width: '6vw',
         textAlign: 'center',
         cursor: 'help'
     }
 
     const ansStyle = {
         width: '7vw',
-        height: `${theme.fonts.size.s}`,
+        height: '2vh',
         border: `2px solid ${theme.colours.stripes}`,
+        fontSize: `${theme.fonts.size.s}`,
         backgroundColor: theme.colours.sky,
-        textAlign: 'center'
+        textAlign: 'center',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 
     const [planes, setPlanes] = useState([]);
@@ -221,25 +224,26 @@ const EquipmentScreen = props => {
                         ...theme.layout,
                         flexFlow: 'column',
                         justifyContent: 'space-evenly',
-                        width: '25%',
+                        width: '30%',
+                        // height: '30%',
                         border: `solid 3px ${theme.colours.stripes}`,
                         borderRadius: '5%',
                         backgroundColor: theme.colours.sky,
                         padding: '5%'
                     }}>
-                        <div style={{...theme.layout, marginTop: '1%'}}>
+                        <div style={{...theme.layout, height: '4vh'}}>
                            <div style={{...ansLabelStyle, cursor: 'default'}}>Wysokość:</div> <div style={ansStyle} id={'height'}/>
                         </div>
-                        <div style={{...theme.layout, marginTop: '1%'}}>
+                        <div style={{...theme.layout, height: '4vh'}}>
                             <div title={"Wymiar terenowy bazy podłużnej"} style={ansLabelStyle}>B<sub>x</sub>:</div> <div style={ansStyle} id={'Bx'}/>
                         </div>
-                        <div style={{...theme.layout, marginTop: '1%'}}>
+                        <div style={{...theme.layout, height: '4vh'}}>
                             <div title={"Wymiar terenowy bazy poprzecznej"} style={ansLabelStyle}>B<sub>y</sub>:</div> <div style={ansStyle} id={'By'}/>
                         </div>
-                        <div title={"Terenowy zasięg zdjęcia wzdłuż kierunku lotu"} style={{...theme.layout, marginTop: '1%'}}>
+                        <div title={"Terenowy zasięg zdjęcia wzdłuż kierunku lotu"} style={{...theme.layout}}>
                             <div style={ansLabelStyle}>L<sub>x</sub>:</div> <div style={ansStyle} id={'Lx'}/>
                         </div>
-                        <div style={{...theme.layout, marginTop: '1%'}}>
+                        <div style={{...theme.layout, height: '4vh'}}>
                             <div title={"Terenowy zasięg zdjęcia w poprzek kierunku lotu"} style={ansLabelStyle}>L<sub>y</sub>:</div> <div style={ansStyle} id={'Ly'}/>
                         </div>
                     </div>
