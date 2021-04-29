@@ -46,7 +46,7 @@ const Header = props => {
             <div style={{
                 ...theme.layout,
                 height: '10vh',
-                width: '100vw',
+                maxWidth: '100vw',
                 flexFlow: 'row',
                 justifyContent: 'center',
                 backgroundColor: theme.colours.sea
