@@ -1,4 +1,5 @@
 const mainTheme = {
+    sea: '#006994',
     fonts: {
         family: 'Bahnschrift, Helvetica, Arial, monospace',
         size: {

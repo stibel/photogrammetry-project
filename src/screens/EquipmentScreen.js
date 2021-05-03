@@ -1,15 +1,15 @@
-import { useContext, useEffect, useRef, useState, useReducer } from "react";
+import { useEffect, useRef, useState, useReducer } from "react";
 import firebase from "../firebase";
 import Loading from "react-loading";
 import Select from "react-select";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { StyleContext } from "../styles/StyleContext";
+import { useStyle } from "../contexts/StyleContext";
 import Input from "../styles/Input";
 import Button from "../styles/Button";
 import Toast from "../services/SignalService";
-import { ACTIONS } from "../globals/ACTIONS";
 import { FieldParametersService } from "../services/FieldParametersService";
+import { ACTIONS } from "../globals/ACTIONS";
 
 const inputLabelStyle = {
     marginRight: '4%',
@@ -26,7 +26,7 @@ const ansLabelStyle = {
 
 
 const EquipmentScreen = props => {
-    const theme = useContext(StyleContext);
+    const {curStyle} = useStyle();
 
     function reducer(state, action) {
         switch (action.type) {
@@ -63,9 +63,9 @@ const EquipmentScreen = props => {
     const ansStyle = {
         width: '7vw',
         height: '2vh',
-        border: `2px solid ${theme.colours.stripes}`,
-        fontSize: `${theme.fonts.size.s}`,
-        backgroundColor: theme.colours.sky,
+        border: `2px solid ${curStyle.colours.stripes}`,
+        fontSize: `${curStyle.fonts.size.s}`,
+        backgroundColor: curStyle.colours.sky,
         textAlign: 'center',
         alignItems: 'center',
         justifyContent: 'center'
@@ -172,52 +172,52 @@ const EquipmentScreen = props => {
     const customStyles = {
         control: styles => ({
             ...styles,
-            backgroundColor: theme.colours.sky,
+            backgroundColor: curStyle.colours.sky,
             height: '5vh',
             width: '15vw',
-            fontSize: theme.fonts.size.s,
-            border: `solid 3px ${theme.colours.stripes}`
+            fontSize: curStyle.fonts.size.s,
+            border: `solid 3px ${curStyle.colours.stripes}`
         }),
 
         dropdownIndicator: styles => ({
             ...styles,
-            color: theme.colours.stripes
+            color: curStyle.colours.stripes
         }),
 
         menuList: styles => ({
             ...styles,
-            backgroundColor: theme.colours.sky,
-            border: `solid 3px ${theme.colours.stripes}`,
+            backgroundColor: curStyle.colours.sky,
+            border: `solid 3px ${curStyle.colours.stripes}`,
             borderRadius: '1%',
-            boxShadow: `0 0 25px ${theme.colours.sky}`
+            boxShadow: `0 0 25px ${curStyle.colours.sky}`
         }),
 
         option: (provided, state) => ({
             ...provided,
-            backgroundColor: state.isFocused ? theme.colours.steel : theme.colours.sky,
-            color: theme.colours.stripes,
+            backgroundColor: state.isFocused ? curStyle.colours.steel : curStyle.colours.sky,
+            color: curStyle.colours.stripes,
             textDecoration: state.isSelected ? 'underline' : 'none',
             cursor: 'pointer'
         }),
 
         singleValue: styles => ({
             ...styles,
-            color: theme.colours.stripes
+            color: curStyle.colours.stripes
         })
     }
 
     if (loading) {
         return (
             <div style={{
-                ...theme.layout,
-                backgroundColor: theme.colours.steel,
+                ...curStyle.layout,
+                backgroundColor: curStyle.colours.steel,
                 height: '90vh',
                 width: '100vw',
-                fontFamily: theme.fonts.family,
-                color: theme.colours.stripes,
+                fontFamily: curStyle.fonts.family,
+                color: curStyle.colours.stripes,
                 justifyContent: 'center',
             }}>
-                <Loading color={theme.colours.stripes} />
+                <Loading color={curStyle.colours.stripes} />
             </div>
         );
     }
@@ -225,15 +225,15 @@ const EquipmentScreen = props => {
     return (
         <div>
             <div style={{
-                ...theme.layout,
-                backgroundColor: theme.colours.steel,
+                ...curStyle.layout,
+                backgroundColor: curStyle.colours.steel,
                 minHeight: '90vh',
                 maxWidth: '100vw',
-                fontFamily: theme.fonts.family,
-                color: theme.colours.stripes
+                fontFamily: curStyle.fonts.family,
+                color: curStyle.colours.stripes
             }}>
                 <div style={{
-                    ...theme.layout,
+                    ...curStyle.layout,
                     flexFlow: 'column',
                     justifyContent: 'space-evenly',
                     width: '50%'
@@ -253,69 +253,69 @@ const EquipmentScreen = props => {
                         options={cameras}
                         onChange={item => setSelectedCamera(item.value)}
                     />
-                    <div style={{ ...theme.layout }}>
+                    <div style={{ ...curStyle.layout }}>
                         <h2 title={ "Terenowy rozmiar piksela" } style={inputLabelStyle}>GSD&nbsp;[cm]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={GSD} />
                     </div>
-                    <div style={{ ...theme.layout }}>
+                    <div style={{ ...curStyle.layout }}>
                         <h2 title={ "Średnia wysokość terenu" } style={inputLabelStyle}>h&nbsp;[m]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={avgHeight} />
                     </div>
-                    <div style={{ ...theme.layout }}>
+                    <div style={{ ...curStyle.layout }}>
                         <h2 title={ "Pokrycie podłużne" } style={inputLabelStyle}>p&nbsp;[%]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={p} />
                     </div>
-                    <div style={{ ...theme.layout }}>
+                    <div style={{ ...curStyle.layout }}>
                         <h2 title={ "Pokrycie poprzeczne" } style={inputLabelStyle}>q&nbsp;[%]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={q} />
                     </div>
-                    <div style={{ ...theme.layout }}>
+                    <div style={{ ...curStyle.layout }}>
                         <h2 title={ "Zasięg obszaru opracowania wzdłuż kierunku lotu" } style={inputLabelStyle}>D<sub>x</sub>&nbsp;[km]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={Dx} />
                     </div>
-                    <div style={{ ...theme.layout }}>
+                    <div style={{ ...curStyle.layout }}>
                         <h2 title={ "Zasięg obszaru opracowania w poprzek kierunku lotu" } style={inputLabelStyle}>D<sub>y</sub>&nbsp;[km]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={Dy} />
                     </div>
                     <Button onClick={getBase}>Oblicz</Button>
                 </div>
                 <div style={{
-                    ...theme.layout,
+                    ...curStyle.layout,
                     flexFlow: 'column',
                     height: '100%',
                     width: '50%',
                     justifyContent: 'center'
                 }}>
                     <div style={{
-                        ...theme.layout,
+                        ...curStyle.layout,
                         flexFlow: 'column',
                         justifyContent: 'space-evenly',
                         width: '30%',
                         // height: '30%',
-                        border: `solid 3px ${theme.colours.stripes}`,
+                        border: `solid 3px ${curStyle.colours.stripes}`,
                         borderRadius: '5%',
-                        backgroundColor: theme.colours.sky,
+                        backgroundColor: curStyle.colours.sky,
                         padding: '5%'
                     }}>
-                        <div style={{...theme.layout, height: '4vh'}}>
+                        <div style={{...curStyle.layout, height: '4vh'}}>
                            <div style={{...ansLabelStyle, cursor: 'default'}}>Wysokość&nbsp;[m]:</div> <div style={ansStyle} id={'height'}/>
                         </div>
-                        <div style={{...theme.layout, height: '4vh'}}>
+                        <div style={{...curStyle.layout, height: '4vh'}}>
                             <div title={"Wymiar terenowy bazy podłużnej"} style={ansLabelStyle}>B<sub>x</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Bx'}/>
                         </div>
-                        <div style={{...theme.layout, height: '4vh'}}>
+                        <div style={{...curStyle.layout, height: '4vh'}}>
                             <div title={"Wymiar terenowy bazy poprzecznej"} style={ansLabelStyle}>B<sub>y</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'By'}/>
                         </div>
-                        <div style={{...theme.layout, height: '4vh'}}>
+                        <div style={{...curStyle.layout, height: '4vh'}}>
                             <div  title={"Terenowy zasięg zdjęcia wzdłuż kierunku lotu"}  style={ansLabelStyle}>L<sub>x</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Lx'}/>
                         </div>
-                        <div style={{...theme.layout, height: '4vh'}}>
+                        <div style={{...curStyle.layout, height: '4vh'}}>
                             <div title={"Terenowy zasięg zdjęcia w poprzek kierunku lotu"} style={ansLabelStyle}>L<sub>y</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Ly'}/>
                         </div>
-                        <div style={{...theme.layout, height: '4vh'}}>
+                        <div style={{...curStyle.layout, height: '4vh'}}>
                             <div title={"Liczba zdjęć w pojedynczym szeregu"} style={ansLabelStyle}>N<sub>x</sub>:</div> <div style={ansStyle} id={'Nx'}/>
                         </div>
-                        <div style={{...theme.layout, height: '4vh'}}>
+                        <div style={{...curStyle.layout, height: '4vh'}}>
                             <div title={"Liczba szeregów"} style={ansLabelStyle}>N<sub>y</sub>:</div> <div style={ansStyle} id={'Ny'}/>
                         </div>
                     </div>

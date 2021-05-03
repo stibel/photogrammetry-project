@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { useHistory } from 'react-router-dom';
 import styled, { keyframes } from "styled-components";
-import { StyleContext } from "../styles/StyleContext";
-import glass from "../images/glass.svg";
 import Button from "../styles/Button";
+import { useStyle } from "../contexts/StyleContext";
+import glass from "../images/glass.svg";
 
 const move = keyframes`
     50% {
@@ -15,7 +14,7 @@ const ImageWrapper = styled.img`
 `
 
 const NotFoundScreen = props => {
-    const theme = useContext(StyleContext)
+    const {curStyle} = useStyle();
     const history = useHistory();
 
     const returnHome = () => {
@@ -24,14 +23,14 @@ const NotFoundScreen = props => {
 
     return (
         <div style={{
-            ...theme.layout,
+            ...curStyle.layout,
             flexFlow: 'column',
             alignItems: 'center',
             justifyContent: 'space-evenly',
-            backgroundColor: theme.colours.steel,
+            backgroundColor: curStyle.colours.steel,
             height: '90vh',
             width: '100vw',
-            fontFamily: theme.fonts.family
+            fontFamily: curStyle.fonts.family
         }}>
             <ImageWrapper style={{ height: '60%' }} src={glass} alt={'Not found'} />
             <Button onClick={returnHome}>Powrót</Button>

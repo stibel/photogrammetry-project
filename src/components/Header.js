@@ -1,10 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import { ROUTES } from "../globals/ROUTES";
 import styled from "styled-components";
-
 import Clock from "./Clock";
-import {StyleContext} from "../styles/StyleContext";
+import { useStyle } from "../contexts/StyleContext";
 
 const ItemWrapper = styled.div`
   @keyframes shadow{
@@ -20,18 +19,18 @@ const ItemWrapper = styled.div`
 `
 
 const Item = props => {
-    const theme = useContext(StyleContext)
+    const {curStyle} = useStyle();
     return (
-        <ItemWrapper style={{...theme.layout, marginLeft: '5%', fontWeight: 'bold'}}>
+        <ItemWrapper style={{...curStyle.layout, marginLeft: '5%', fontWeight: 'bold'}}>
             <NavLink
                 style={{
                     textDecoration: 'none',
-                    fontFamily: theme.fonts.family,
-                    fontSize: theme.fonts.size.xl,
-                    color: theme.colours.steel
+                    fontFamily: curStyle.fonts.family,
+                    fontSize: curStyle.fonts.size.xl,
+                    color: curStyle.colours.steel
                 }}
                 activeStyle={{
-                    textShadow: '5px 3px ' + theme.colours.navy + ' , -5px -3px ' + theme.colours.stripes
+                    textShadow: '5px 3px ' + curStyle.colours.navy + ' , -5px -3px ' + curStyle.colours.stripes
                 }}
                 exact to={props.dest}>
                 {props.children}
@@ -41,18 +40,19 @@ const Item = props => {
 }
 
 const Header = props => {
-    const theme = useContext(StyleContext)
+    const {curStyle} = useStyle();
     return (
             <div style={{
-                ...theme.layout,
+                ...curStyle.layout,
                 height: '10vh',
                 maxWidth: '100vw',
                 flexFlow: 'row',
                 justifyContent: 'center',
-                backgroundColor: theme.colours.sea
+                backgroundColor: curStyle.colours.sea
+
             }}>
                 <div style={{
-                    ...theme.layout,
+                    ...curStyle.layout,
                     height: 'inherit',
                     width: '85vw',
                     flexFlow: 'row',
@@ -69,7 +69,7 @@ const Header = props => {
                     </Item>
                 </div>
                 <div style={{
-                    ...theme.layout,
+                    ...curStyle.layout,
                     width: '15vw',
                     justifyContent:'right'
                 }}>

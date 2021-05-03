@@ -1,6 +1,5 @@
-import { useContext } from "react";
-import { StyleContext } from "../styles/StyleContext";
 import styled, { keyframes } from "styled-components";
+import { useStyle } from "../contexts/StyleContext";
 
 const show = keyframes`
   25% {
@@ -23,22 +22,22 @@ const NameWrapper = styled.div`
 `
 
 const HomeScreen = props => {
-    const theme = useContext(StyleContext)
+    const {curStyle} = useStyle();
 
     return (
             <div style={{
-                ...theme.layout,
-                backgroundColor: theme.colours.steel,
+                ...curStyle.layout,
+                backgroundColor: curStyle.colours.steel,
                 height: '90vh',
                 width: '100vw',
-                fontFamily: theme.fonts.family
+                fontFamily: curStyle.fonts.family
             }}>
                 <NameWrapper style={{
-                    ...theme.layout,
+                    ...curStyle.layout,
                     width: '50vw',
                     justifyContent: 'center',
-                    fontSize: theme.fonts.size.title,
-                    color: theme.colours.steel,
+                    fontSize: curStyle.fonts.size.title,
+                    color: curStyle.colours.steel,
                     // textShadow: `5px 3px ${theme.colours.navy}, -5px -3px ${theme.colours.stripes}, 5px -3px ${theme.colours.navy}, -5px 3px ${theme.colours.stripes}`
                 }}>
                     Mikołaj Siebielec
