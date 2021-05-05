@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router-dom';
 import styled, { keyframes } from "styled-components";
-import Button from "../styles/Button";
 import { useStyle } from "../contexts/StyleContext";
 import glass from "../images/glass.svg";
+import Button from "../styles/Button";
 
 const move = keyframes`
     50% {
@@ -14,7 +14,7 @@ const ImageWrapper = styled.img`
 `
 
 const NotFoundScreen = props => {
-    const {curStyle} = useStyle();
+    const { curStyle } = useStyle();
     const history = useHistory();
 
     const returnHome = () => {

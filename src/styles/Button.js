@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-    // navy: '#000080',
-    // stripes: '#BF1C2D',
-    // steel: '#E8E6CE',
-    // sky: '#B6D9E1',
-    // sea: '#006994'
+// navy: '#000080',
+// stripes: '#BF1C2D',
+// steel: '#E8E6CE',
+// sky: '#B6D9E1',
+// sea: '#006994'
 
 const Button = styled.div`
   padding: 0;

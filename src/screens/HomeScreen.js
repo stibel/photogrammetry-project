@@ -22,28 +22,28 @@ const NameWrapper = styled.div`
 `
 
 const HomeScreen = props => {
-    const {curStyle} = useStyle();
+  const { curStyle } = useStyle();
 
-    return (
-            <div style={{
-                ...curStyle.layout,
-                backgroundColor: curStyle.colours.steel,
-                height: '90vh',
-                width: '100vw',
-                fontFamily: curStyle.fonts.family
-            }}>
-                <NameWrapper style={{
-                    ...curStyle.layout,
-                    width: '50vw',
-                    justifyContent: 'center',
-                    fontSize: curStyle.fonts.size.title,
-                    color: curStyle.colours.steel,
-                    // textShadow: `5px 3px ${theme.colours.navy}, -5px -3px ${theme.colours.stripes}, 5px -3px ${theme.colours.navy}, -5px 3px ${theme.colours.stripes}`
-                }}>
-                    Mikołaj Siebielec
+  return (
+    <div style={{
+      ...curStyle.layout,
+      backgroundColor: curStyle.colours.steel,
+      height: '90vh',
+      width: '100vw',
+      fontFamily: curStyle.fonts.family
+    }}>
+      <NameWrapper style={{
+        ...curStyle.layout,
+        width: '50vw',
+        justifyContent: 'center',
+        fontSize: curStyle.fonts.size.title,
+        color: curStyle.colours.steel,
+        // textShadow: `5px 3px ${theme.colours.navy}, -5px -3px ${theme.colours.stripes}, 5px -3px ${theme.colours.navy}, -5px 3px ${theme.colours.stripes}`
+      }}>
+        Mikołaj Siebielec
                 </NameWrapper>
-            </div>
-    );
+    </div>
+  );
 }
 
 export default HomeScreen;

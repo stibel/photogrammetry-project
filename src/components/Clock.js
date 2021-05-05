@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useEffect, useState } from "react";
 import Clock from "react-clock";
 import 'react-clock/dist/Clock.css';
 
@@ -18,7 +18,7 @@ const MyClock = () => {
     }, []);
 
     return (
-        <Clock value={value} size={window.innerHeight / 11} secondHandWidth={2} renderMinuteMarks={false}/>
+        <Clock value={value} size={window.innerHeight / 11} secondHandWidth={2} renderMinuteMarks={false} />
         //Clock cannot be styled using 'vh' value so I used a workaround
     )
 }

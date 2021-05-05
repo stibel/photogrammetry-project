@@ -41,7 +41,7 @@ export class FieldParametersService {
         const tSecond = Bx / plane.vMin;
         const isMaxOk = camera.workCycle < tFirst;
         const isMinOk = camera.workCycle < tSecond;
-        return{ isMaxOk, isMinOk };
+        return { isMaxOk, isMinOk };
     }
 
 }

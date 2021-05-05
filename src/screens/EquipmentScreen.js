@@ -1,15 +1,15 @@
-import { useEffect, useRef, useState, useReducer } from "react";
-import firebase from "../firebase";
+import { useEffect, useReducer, useRef, useState } from "react";
 import Loading from "react-loading";
 import Select from "react-select";
 import { ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useStyle } from "../contexts/StyleContext";
-import Input from "../styles/Input";
-import Button from "../styles/Button";
-import Toast from "../services/SignalService";
-import { FieldParametersService } from "../services/FieldParametersService";
+import firebase from "../firebase";
 import { ACTIONS } from "../globals/ACTIONS";
+import { FieldParametersService } from "../services/FieldParametersService";
+import Toast from "../services/SignalService";
+import Button from "../styles/Button";
+import Input from "../styles/Input";
 
 const inputLabelStyle = {
     marginRight: '4%',
@@ -26,7 +26,7 @@ const ansLabelStyle = {
 
 
 const EquipmentScreen = props => {
-    const {curStyle} = useStyle();
+    const { curStyle } = useStyle();
 
     function reducer(state, action) {
         switch (action.type) {
@@ -105,7 +105,7 @@ const EquipmentScreen = props => {
     }
 
     const correctBase = () => {
-        if(!state || !validateInput(Dx.current.value) || !validateInput(Dy.current.value)) {
+        if (!state || !validateInput(Dx.current.value) || !validateInput(Dy.current.value)) {
             Toast('Wprowadź prawidłowe wartości!', 'w');
             return
         }
@@ -113,7 +113,7 @@ const EquipmentScreen = props => {
     }
 
     const getInterval = () => {
-        if(!state) {
+        if (!state) {
             Toast('Wprowadź prawidłowe wartości!', 'w');
             return
         }
@@ -121,16 +121,15 @@ const EquipmentScreen = props => {
     }
 
     useEffect(() => {
-        if (state)
-            {
-                document.getElementById('height').innerText = FieldParametersService.getFlightHeight(GSD.current.value, selectedCamera, parseFloat(avgHeight.current.value));
-                document.getElementById('Lx').innerText = state.Lx.toString();
-                document.getElementById('Ly').innerText = state.Ly.toString();
-                document.getElementById('Bx').innerText = state.Bx.toString();
-                document.getElementById('By').innerText = state.By.toString();
-                document.getElementById('Nx').innerText = state.Nx.toString();
-                document.getElementById('Ny').innerText = state.Ny.toString();
-            }
+        if (state) {
+            document.getElementById('height').innerText = FieldParametersService.getFlightHeight(GSD.current.value, selectedCamera, parseFloat(avgHeight.current.value));
+            document.getElementById('Lx').innerText = state.Lx.toString();
+            document.getElementById('Ly').innerText = state.Ly.toString();
+            document.getElementById('Bx').innerText = state.Bx.toString();
+            document.getElementById('By').innerText = state.By.toString();
+            document.getElementById('Nx').innerText = state.Nx.toString();
+            document.getElementById('Ny').innerText = state.Ny.toString();
+        }
         console.log(state);
         // eslint-disable-next-line
     }, [state])
@@ -151,7 +150,7 @@ const EquipmentScreen = props => {
             planesRef.onSnapshot((querySnapshot) => {
                 const items = [];
                 querySnapshot.forEach((doc) => {
-                    items.push({value: doc.data(), label: doc.data().fullName});
+                    items.push({ value: doc.data(), label: doc.data().fullName });
                 });
                 setPlanes(items);
                 setSelectedPlane(items[0].value)
@@ -159,7 +158,7 @@ const EquipmentScreen = props => {
             camerasRef.onSnapshot((querySnapshot) => {
                 const items = [];
                 querySnapshot.forEach((doc) => {
-                    items.push({value: doc.data(), label: doc.data().fullName});
+                    items.push({ value: doc.data(), label: doc.data().fullName });
                 });
                 setCameras(items);
                 setSelectedCamera(items[0].value);
@@ -254,27 +253,27 @@ const EquipmentScreen = props => {
                         onChange={item => setSelectedCamera(item.value)}
                     />
                     <div style={{ ...curStyle.layout }}>
-                        <h2 title={ "Terenowy rozmiar piksela" } style={inputLabelStyle}>GSD&nbsp;[cm]</h2>
+                        <h2 title={"Terenowy rozmiar piksela"} style={inputLabelStyle}>GSD&nbsp;[cm]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={GSD} />
                     </div>
                     <div style={{ ...curStyle.layout }}>
-                        <h2 title={ "Średnia wysokość terenu" } style={inputLabelStyle}>h&nbsp;[m]</h2>
+                        <h2 title={"Średnia wysokość terenu"} style={inputLabelStyle}>h&nbsp;[m]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={avgHeight} />
                     </div>
                     <div style={{ ...curStyle.layout }}>
-                        <h2 title={ "Pokrycie podłużne" } style={inputLabelStyle}>p&nbsp;[%]</h2>
+                        <h2 title={"Pokrycie podłużne"} style={inputLabelStyle}>p&nbsp;[%]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={p} />
                     </div>
                     <div style={{ ...curStyle.layout }}>
-                        <h2 title={ "Pokrycie poprzeczne" } style={inputLabelStyle}>q&nbsp;[%]</h2>
+                        <h2 title={"Pokrycie poprzeczne"} style={inputLabelStyle}>q&nbsp;[%]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={q} />
                     </div>
                     <div style={{ ...curStyle.layout }}>
-                        <h2 title={ "Zasięg obszaru opracowania wzdłuż kierunku lotu" } style={inputLabelStyle}>D<sub>x</sub>&nbsp;[km]</h2>
+                        <h2 title={"Zasięg obszaru opracowania wzdłuż kierunku lotu"} style={inputLabelStyle}>D<sub>x</sub>&nbsp;[km]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={Dx} />
                     </div>
                     <div style={{ ...curStyle.layout }}>
-                        <h2 title={ "Zasięg obszaru opracowania w poprzek kierunku lotu" } style={inputLabelStyle}>D<sub>y</sub>&nbsp;[km]</h2>
+                        <h2 title={"Zasięg obszaru opracowania w poprzek kierunku lotu"} style={inputLabelStyle}>D<sub>y</sub>&nbsp;[km]</h2>
                         <Input style={{ width: '10vw', height: '4vh' }} ref={Dy} />
                     </div>
                     <Button onClick={getBase}>Oblicz</Button>
@@ -297,32 +296,32 @@ const EquipmentScreen = props => {
                         backgroundColor: curStyle.colours.sky,
                         padding: '5%'
                     }}>
-                        <div style={{...curStyle.layout, height: '4vh'}}>
-                           <div style={{...ansLabelStyle, cursor: 'default'}}>Wysokość&nbsp;[m]:</div> <div style={ansStyle} id={'height'}/>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div style={{ ...ansLabelStyle, cursor: 'default' }}>Wysokość&nbsp;[m]:</div> <div style={ansStyle} id={'height'} />
                         </div>
-                        <div style={{...curStyle.layout, height: '4vh'}}>
-                            <div title={"Wymiar terenowy bazy podłużnej"} style={ansLabelStyle}>B<sub>x</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Bx'}/>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div title={"Wymiar terenowy bazy podłużnej"} style={ansLabelStyle}>B<sub>x</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Bx'} />
                         </div>
-                        <div style={{...curStyle.layout, height: '4vh'}}>
-                            <div title={"Wymiar terenowy bazy poprzecznej"} style={ansLabelStyle}>B<sub>y</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'By'}/>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div title={"Wymiar terenowy bazy poprzecznej"} style={ansLabelStyle}>B<sub>y</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'By'} />
                         </div>
-                        <div style={{...curStyle.layout, height: '4vh'}}>
-                            <div  title={"Terenowy zasięg zdjęcia wzdłuż kierunku lotu"}  style={ansLabelStyle}>L<sub>x</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Lx'}/>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div title={"Terenowy zasięg zdjęcia wzdłuż kierunku lotu"} style={ansLabelStyle}>L<sub>x</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Lx'} />
                         </div>
-                        <div style={{...curStyle.layout, height: '4vh'}}>
-                            <div title={"Terenowy zasięg zdjęcia w poprzek kierunku lotu"} style={ansLabelStyle}>L<sub>y</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Ly'}/>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div title={"Terenowy zasięg zdjęcia w poprzek kierunku lotu"} style={ansLabelStyle}>L<sub>y</sub>&nbsp;[m]:</div> <div style={ansStyle} id={'Ly'} />
                         </div>
-                        <div style={{...curStyle.layout, height: '4vh'}}>
-                            <div title={"Liczba zdjęć w pojedynczym szeregu"} style={ansLabelStyle}>N<sub>x</sub>:</div> <div style={ansStyle} id={'Nx'}/>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div title={"Liczba zdjęć w pojedynczym szeregu"} style={ansLabelStyle}>N<sub>x</sub>:</div> <div style={ansStyle} id={'Nx'} />
                         </div>
-                        <div style={{...curStyle.layout, height: '4vh'}}>
-                            <div title={"Liczba szeregów"} style={ansLabelStyle}>N<sub>y</sub>:</div> <div style={ansStyle} id={'Ny'}/>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div title={"Liczba szeregów"} style={ansLabelStyle}>N<sub>y</sub>:</div> <div style={ansStyle} id={'Ny'} />
                         </div>
                     </div>
                     <Button onClick={correctBase}> Dokonaj korekcji bazy </Button>
                     <Button title={
                         "Znając ostateczne parametry lotu należy jeszcze skontrolować, czy interwał czasu pomiędzy ekspozycjami nie jest mniejszy od cyklu pracy kamery"}
-                            onClick={getInterval}> Kontrola interwału </Button>
+                        onClick={getInterval}> Kontrola interwału </Button>
                 </div>
             </div>
             <ToastContainer />

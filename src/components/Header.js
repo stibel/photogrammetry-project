@@ -1,9 +1,9 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { ROUTES } from "../globals/ROUTES";
 import styled from "styled-components";
-import Clock from "./Clock";
 import { useStyle } from "../contexts/StyleContext";
+import { ROUTES } from "../globals/ROUTES";
+import Clock from "./Clock";
 
 const ItemWrapper = styled.div`
   @keyframes shadow{
@@ -19,9 +19,9 @@ const ItemWrapper = styled.div`
 `
 
 const Item = props => {
-    const {curStyle} = useStyle();
+    const { curStyle } = useStyle();
     return (
-        <ItemWrapper style={{...curStyle.layout, marginLeft: '5%', fontWeight: 'bold'}}>
+        <ItemWrapper style={{ ...curStyle.layout, marginLeft: '5%', fontWeight: 'bold' }}>
             <NavLink
                 style={{
                     textDecoration: 'none',
@@ -40,42 +40,42 @@ const Item = props => {
 }
 
 const Header = props => {
-    const {curStyle} = useStyle();
+    const { curStyle } = useStyle();
     return (
+        <div style={{
+            ...curStyle.layout,
+            height: '10vh',
+            maxWidth: '100vw',
+            flexFlow: 'row',
+            justifyContent: 'center',
+            backgroundColor: curStyle.colours.sea
+
+        }}>
             <div style={{
                 ...curStyle.layout,
-                height: '10vh',
-                maxWidth: '100vw',
+                height: 'inherit',
+                width: '85vw',
                 flexFlow: 'row',
-                justifyContent: 'center',
-                backgroundColor: curStyle.colours.sea
-
+                justifyContent: 'left'
             }}>
-                <div style={{
-                    ...curStyle.layout,
-                    height: 'inherit',
-                    width: '85vw',
-                    flexFlow: 'row',
-                    justifyContent: 'left'
-                }}>
-                    <Item dest={ROUTES.MAIN.url}>
-                            {props.destFirst}
-                    </Item>
-                    <Item dest={ROUTES.EQUIPMENT.url}>
-                            {props.destSecond}
-                    </Item>
-                    <Item dest={ROUTES.RESULT.url}>
-                        {props.destThird}
-                    </Item>
-                </div>
-                <div style={{
-                    ...curStyle.layout,
-                    width: '15vw',
-                    justifyContent:'right'
-                }}>
-                    <Clock />
-                </div>
+                <Item dest={ROUTES.MAIN.url}>
+                    {props.destFirst}
+                </Item>
+                <Item dest={ROUTES.EQUIPMENT.url}>
+                    {props.destSecond}
+                </Item>
+                <Item dest={ROUTES.RESULT.url}>
+                    {props.destThird}
+                </Item>
             </div>
+            <div style={{
+                ...curStyle.layout,
+                width: '15vw',
+                justifyContent: 'right'
+            }}>
+                <Clock />
+            </div>
+        </div>
     )
 }
 

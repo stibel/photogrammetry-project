@@ -1,4 +1,4 @@
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const Toast = (msg, type) => {
     switch (type) {
