@@ -2,10 +2,10 @@ export const ROUTES = {
     MAIN: {
         url: '/'
     },
-    EQUIPMENT: {
-        url: 'equipment'
+    PARAMETERS: {
+        url: '/parameters'
     },
     RESULT: {
-        url: 'results'
+        url: '/parameters/results'
     }
 }

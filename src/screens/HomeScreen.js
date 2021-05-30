@@ -1,5 +1,7 @@
 import styled, { keyframes } from "styled-components";
+import Slideshow from "../components/Slideshow";
 import { useStyle } from "../contexts/StyleContext";
+import { slideshowImages } from "../data/SlideshowData";
 
 const show = keyframes`
   25% {
@@ -37,11 +39,20 @@ const HomeScreen = props => {
         width: '50vw',
         justifyContent: 'center',
         fontSize: curStyle.fonts.size.title,
-        color: curStyle.colours.steel,
+        color: curStyle.colours.steel
         // textShadow: `5px 3px ${theme.colours.navy}, -5px -3px ${theme.colours.stripes}, 5px -3px ${theme.colours.navy}, -5px 3px ${theme.colours.stripes}`
       }}>
         Mikołaj Siebielec
-                </NameWrapper>
+      </NameWrapper>
+      <div style={{
+        ...curStyle.layout,
+        width: '50vw',
+        justifyContent: 'center',
+        fontSize: curStyle.fonts.size.title,
+        color: curStyle.colours.steel,
+      }}>
+        <Slideshow data={slideshowImages} />
+      </div>
     </div>
   );
 }

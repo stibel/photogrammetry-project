@@ -5,15 +5,14 @@ export class FieldParametersService {
     }
 
     static getFlightHeight(GSD, camera, avgHeight) {
-        //GSD to centimeters
+        //GSD to meters
         const height = (GSD / 100) * (camera.focalLength * Math.pow(10, -3)) / (camera.pixel * Math.pow(10, -6)) + avgHeight;
-        console.log(height);
+        // console.log(height);
         return this.round(height, 3);
     }
 
     static getBase(GSD, camera, p, q, Dx, Dy) {
-        const dimensionX = camera.matrixDimension[1];
-        const dimensionY = camera.matrixDimension[0];
+        const [dimensionY, dimensionX] = camera.matrixDimension;
 
         //GSD to centimeters
         const Lx = this.round(dimensionX * (GSD / 100));
@@ -24,7 +23,7 @@ export class FieldParametersService {
         const Ny = Math.ceil(Dy * 1000 / By);
         const photoQuantity = Nx * Ny;
 
-        return { Lx, Ly, Bx, By, Nx, Ny, photoQuantity };
+        return { Lx, Ly, Bx, By, Nx, Ny, photoQuantity, flightTime: '-', k: '-' };
     }
 
     static correctBase(Nx, Ny, Dx, Dy) {
@@ -32,16 +31,20 @@ export class FieldParametersService {
         const Bx = this.round(Dx * 1000 / (Nx - 4))
         const By = this.round(Dy * 1000 / Ny);
 
-        return { Bx, By };
+        return { Dx: Dx * 1000, Dy: Dy * 1000, Bx, By };
     }
 
-    static getInterval(Bx, plane, camera) {
+    static getInterval(Bx, Ny, photoQuantity, plane, camera) {
         //checking if time between expositions is longer than camera work cycle
-        const tFirst = Bx / plane.vMax;
-        const tSecond = Bx / plane.vMin;
+        const tFirst = Bx / (plane.vMax * 3.6);
+        const tSecond = Bx / (plane.vMin * 3.6);
         const isMaxOk = camera.workCycle < tFirst;
         const isMinOk = camera.workCycle < tSecond;
-        return { isMaxOk, isMinOk };
+        let flightTime = this.round((photoQuantity * tFirst + (Ny - 1) * 140) / 60, 2);
+        return { isMaxOk, isMinOk, flightTime: flightTime };
     }
 
+    static getCoefficient({ Bx, By, Dx, Dy, photoQuantity }) {
+        return { k: this.round(photoQuantity * ((Bx * By) / (parseFloat(Dx) * parseFloat(Dy))), 3) }
+    }
 }

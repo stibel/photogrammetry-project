@@ -9,8 +9,8 @@ import styled from "styled-components";
 const Button = styled.div`
   padding: 0;
   margin: 1vw;
-  width: 12vw;
-  height: 2vw;
+  width: 14vw;
+  height: 3vw;
   display: flex;
   text-align: center;
   align-items: center;

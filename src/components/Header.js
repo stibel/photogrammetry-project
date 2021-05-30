@@ -61,12 +61,12 @@ const Header = props => {
                 <Item dest={ROUTES.MAIN.url}>
                     {props.destFirst}
                 </Item>
-                <Item dest={ROUTES.EQUIPMENT.url}>
+                <Item dest={ROUTES.PARAMETERS.url}>
                     {props.destSecond}
                 </Item>
-                <Item dest={ROUTES.RESULT.url}>
+                {/* <Item dest={ROUTES.RESULT.url}>
                     {props.destThird}
-                </Item>
+                </Item> */}
             </div>
             <div style={{
                 ...curStyle.layout,

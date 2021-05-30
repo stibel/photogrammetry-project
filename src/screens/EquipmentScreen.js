@@ -1,13 +1,12 @@
 import { useEffect, useReducer, useRef, useState } from "react";
 import Loading from "react-loading";
 import Select from "react-select";
-import { ToastContainer } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useStyle } from "../contexts/StyleContext";
 import firebase from "../firebase";
 import { ACTIONS } from "../globals/ACTIONS";
 import { FieldParametersService } from "../services/FieldParametersService";
-import Toast from "../services/SignalService";
 import Button from "../styles/Button";
 import Input from "../styles/Input";
 
@@ -19,7 +18,7 @@ const inputLabelStyle = {
 }
 
 const ansLabelStyle = {
-    width: '6vw',
+    width: '7vw',
     textAlign: 'center',
     cursor: 'help'
 }
@@ -36,12 +35,20 @@ const EquipmentScreen = props => {
                 }
             case 'correct':
                 return {
-                    ...state, ...FieldParametersService.correctBase(state.Nx, state.Ny, Dx.current.value, Dy.current.value)
+                    ...state,
+                    ...FieldParametersService.correctBase(state.Nx, state.Ny, Dx.current.value, Dy.current.value)
                 }
             case 'intervals':
                 return {
-                    ...state, ...FieldParametersService.getInterval(state.Bx, selectedPlane, selectedCamera)
+                    ...state,
+                    ...FieldParametersService.getInterval(state.Bx, state.Ny, state.photoQuantity, selectedPlane, selectedCamera)
                 }
+            case 'coefficient': {
+                return {
+                    ...state,
+                    ...FieldParametersService.getCoefficient(state)
+                }
+            }
             default:
                 return state
         }
@@ -49,7 +56,7 @@ const EquipmentScreen = props => {
 
     const [planes, setPlanes] = useState([]);
     const [cameras, setCameras] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
     const [selectedPlane, setSelectedPlane] = useState(null);
     const [selectedCamera, setSelectedCamera] = useState(null);
     const GSD = useRef(null);
@@ -58,7 +65,7 @@ const EquipmentScreen = props => {
     const q = useRef(null);
     const Dx = useRef(null);
     const Dy = useRef(null);
-    const [state, dispatch] = useReducer(reducer, null);
+    const [curParams, dispatchParams] = useReducer(reducer, null);
 
     const ansStyle = {
         width: '7vw',
@@ -97,56 +104,63 @@ const EquipmentScreen = props => {
             !validateInput(p.current.value, 0, 100) || !validateInput(q.current.value, 0, 100)
             || !validateInput(Dx.current.value) || !validateInput(Dy.current.value)
         ) {
-            Toast("Wprowadź poprawne wartości! Pamiętaj, żeby użyć kropki jako separatora dziesiętnego.", 'e');
+            toast.error("Wprowadź poprawne wartości! Pamiętaj, żeby użyć kropki jako separatora dziesiętnego.");
             return
         }
-        dispatch({ type: ACTIONS.SET });
+        dispatchParams({ type: ACTIONS.SET });
         // setParameters(FieldParametersService.getBase(GSD.current.value, selectedCamera, p.current.value, q.current.value, Dx.current.value, Dy.current.value));
     }
 
     const correctBase = () => {
-        if (!state || !validateInput(Dx.current.value) || !validateInput(Dy.current.value)) {
-            Toast('Wprowadź prawidłowe wartości!', 'w');
+        if (!curParams || !validateInput(Dx.current.value) || !validateInput(Dy.current.value)) {
+            toast.warn("Dokonaj wstępnych obliczeń!");
             return
         }
-        dispatch({ type: ACTIONS.CORRECT })
+        dispatchParams({ type: ACTIONS.CORRECT })
     }
 
     const getInterval = () => {
-        if (!state) {
-            Toast('Wprowadź prawidłowe wartości!', 'w');
+        if (!curParams) {
+            toast.warn("Dokonaj wstępnych obliczeń!");
             return
         }
-        dispatch({ type: ACTIONS.INTERVALS })
+        dispatchParams({ type: ACTIONS.INTERVALS })
+    }
+
+    const getCoefficient = () => {
+        if (!curParams) {
+            toast.warn("Dokonaj wstępnych obliczeń!");
+            return
+        }
+        dispatchParams({ type: ACTIONS.COEFFICIENT })
     }
 
     useEffect(() => {
-        if (state) {
+        if (curParams) {
             document.getElementById('height').innerText = FieldParametersService.getFlightHeight(GSD.current.value, selectedCamera, parseFloat(avgHeight.current.value));
-            document.getElementById('Lx').innerText = state.Lx.toString();
-            document.getElementById('Ly').innerText = state.Ly.toString();
-            document.getElementById('Bx').innerText = state.Bx.toString();
-            document.getElementById('By').innerText = state.By.toString();
-            document.getElementById('Nx').innerText = state.Nx.toString();
-            document.getElementById('Ny').innerText = state.Ny.toString();
+            document.getElementById('Lx').innerText = curParams.Lx.toString();
+            document.getElementById('Ly').innerText = curParams.Ly.toString();
+            document.getElementById('Bx').innerText = curParams.Bx.toString();
+            document.getElementById('By').innerText = curParams.By.toString();
+            document.getElementById('Nx').innerText = curParams.Nx.toString();
+            document.getElementById('Ny').innerText = curParams.Ny.toString();
+            if (curParams.hasOwnProperty('flightTime'))
+                document.getElementById('flightTime').innerText = curParams.flightTime.toString();
+            if (curParams.hasOwnProperty('k'))
+                document.getElementById('k').innerText = curParams.k.toString();    
         }
-        console.log(state);
         // eslint-disable-next-line
-    }, [state])
+    }, [curParams])
 
-    // useEffect(() => {
-    //     console.log(selectedPlane, selectedCamera)
-    // }, [selectedPlane, selectedCamera])
-    //
+
     useEffect(() => {
-        console.log(state)
-    }, [state])
+        console.log(curParams)
+    }, [curParams]);
 
     useEffect(() => {
         const planesRef = firebase.firestore().collection("planes");
         const camerasRef = firebase.firestore().collection("cameras");
         function getItems() {
-            setLoading(true);
             planesRef.onSnapshot((querySnapshot) => {
                 const items = [];
                 querySnapshot.forEach((doc) => {
@@ -222,6 +236,8 @@ const EquipmentScreen = props => {
     }
 
     return (
+        // <Switch>
+        //     <Route exact path={`${path}`}>
         <div>
             <div style={{
                 ...curStyle.layout,
@@ -317,15 +333,39 @@ const EquipmentScreen = props => {
                         <div style={{ ...curStyle.layout, height: '4vh' }}>
                             <div title={"Liczba szeregów"} style={ansLabelStyle}>N<sub>y</sub>:</div> <div style={ansStyle} id={'Ny'} />
                         </div>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div style={{ ...ansLabelStyle, cursor: 'default' }}>Czas lotu&nbsp;[min]:</div> <div style={ansStyle} id={'flightTime'} />
+                        </div>
+                        <div style={{ ...curStyle.layout, height: '4vh' }}>
+                            <div title={"Współczynnik empiryczny k"} style={ansLabelStyle}>k:</div> <div style={ansStyle} id={'k'} />
+                        </div>
                     </div>
-                    <Button onClick={correctBase}> Dokonaj korekcji bazy </Button>
+                    <Button onClick={correctBase}>
+                        Dokonaj korekcji bazy
+                    </Button>
                     <Button title={
                         "Znając ostateczne parametry lotu należy jeszcze skontrolować, czy interwał czasu pomiędzy ekspozycjami nie jest mniejszy od cyklu pracy kamery"}
-                        onClick={getInterval}> Kontrola interwału </Button>
+                        onClick={getInterval}> Kontrola interwału i czas lotu
+                    </Button>
+                    <Button onClick={getCoefficient}>
+                        Oblicz współczynnik k
+                    </Button>
+                    {/* <Button style={{
+                        width: "15vw",
+                        height: "3vw",
+                        fontSize: curStyle.fonts.size.m
+                    }}>
+                        Prezentacja wyników
+                    </Button> */}
                 </div>
             </div>
             <ToastContainer />
         </div>
+        // </Route>
+        // {<Route exact path={`${path}/results`}>
+        //     <ResultsScreen />
+        // </Route>
+        // </Switch>
     );
 }
 
